@@ -1,11 +1,12 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import SearchBox from "../components/SearchBox";
 import Navbar from "../components/Navbar";
 import Layout from "../components/Layout";
 import RecipeCard from "../components/RecipeCard";
 import Pagination from "../components/Pagination";
-import { useState } from "react";
+import Modal from "../components/Modal";
+import CalendarModal from "../components/CalendarModal";
 
 const dummyRecipes = [
   {
@@ -22,21 +23,41 @@ const dummyRecipes = [
     image:
       "https://www.seriouseats.com/thmb/jsfvb5RyxampT3ZdqOgZTEV4j88=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/stir-fried-rice-with-chinese-sausage-recipe-hero-03_1-96ea47b756444693ae3cbd60ec7afe02.JPG",
   },
-  // Tambahkan data lainnya untuk simulasi
 ];
 
 export default function RecipePage() {
   const [currentPage, setCurrentPage] = useState(1);
   const recipesPerPage = 6;
-
-  // Hitung total halaman
   const totalPages = Math.ceil(dummyRecipes.length / recipesPerPage);
 
-  // Data untuk halaman saat ini
   const currentRecipes = dummyRecipes.slice(
     (currentPage - 1) * recipesPerPage,
     currentPage * recipesPerPage
   );
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isCalendarModalOpen, setIsCalendarModalOpen] = useState(false);
+  const [selectedRecipe, setSelectedRecipe] = useState(null);
+
+  const openModal = (recipe) => {
+    setSelectedRecipe(recipe);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => setIsModalOpen(false);
+  const closeCalendarModal = () => setIsCalendarModalOpen(false);
+
+  const handleConfirm = () => {
+    setIsModalOpen(false);
+    setIsCalendarModalOpen(true);
+  };
+
+  const handleSave = (date) => {
+    console.log(
+      `Recipe "${selectedRecipe.name}" scheduled on ${date.toDateString()}`
+    );
+    setIsCalendarModalOpen(false);
+  };
 
   return (
     <Layout>
@@ -45,12 +66,29 @@ export default function RecipePage() {
         <div className="relative top-5 mx-auto w-full h-full max-w-xl flex items-center z-10">
           <SearchBox />
         </div>
-        <div className="p-6">
-          <div className="grid grid-cols-3 gap-6 mt-6">
+        <div className="p-6 mt-3">
+          <div className="grid grid-cols-4">
             {currentRecipes.map((recipe) => (
-              <RecipeCard key={recipe.id} recipe={recipe} />
+              <div
+                key={recipe.id}
+                onClick={() => openModal(recipe)}
+                className="cursor-pointer"
+              >
+                <RecipeCard recipe={recipe} />
+              </div>
             ))}
           </div>
+          <Modal
+            isOpen={isModalOpen}
+            onClose={closeModal}
+            onConfirm={handleConfirm}
+          />
+          <CalendarModal
+            isOpen={isCalendarModalOpen}
+            onClose={closeCalendarModal}
+            onSave={handleSave}
+            recipe={selectedRecipe}
+          />
           <Pagination
             currentPage={currentPage}
             totalPages={totalPages}
