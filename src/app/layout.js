@@ -1,6 +1,9 @@
 import localFont from "next/font/local";
 import "./globals.css";
 
+// import "@progress/kendo-theme-default/dist/all.css"; // or kendo-theme-bootstrap, kendo-theme-material
+// import "@progress/kendo-date-math";
+
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
   variable: "--font-geist-sans",
