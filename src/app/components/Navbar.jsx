@@ -90,7 +90,7 @@ export default function Navbar() {
               )}
             </>
           ) : (
-            <Link legacyBehavior href="/signup">
+            <Link legacyBehavior href="/auth/signup">
               <a className="text-orange-500 font-semibold hover:underline">
                 Sign Up
               </a>
