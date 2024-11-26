@@ -17,14 +17,14 @@ export default function RecipeCard({ recipe }) {
 
   return (
     <div className="bg-[#F4854D] shadow-md rounded-lg flex flex-col w-[300px] h-[400px]">
+      {/* Gambar Resep */}
       <div className="flex justify-center items-center p-4 h-[60%]">
-        {/* Flexbox container untuk gambar */}
         <Image
           src={recipe.image}
           alt={recipe.name}
           className="rounded-t-lg object-cover"
           width={300}
-          height={200} // Sesuaikan tinggi gambar agar seragam
+          height={200}
         />
       </div>
 
