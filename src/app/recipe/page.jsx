@@ -28,37 +28,32 @@ const dummyRecipes = [
 
 export default function RecipePage() {
   const [currentPage, setCurrentPage] = useState(1);
-  const recipesPerPage = 6;
-  const totalPages = Math.ceil(dummyRecipes.length / recipesPerPage);
-
-  const currentRecipes = dummyRecipes.slice(
-    (currentPage - 1) * recipesPerPage,
-    currentPage * recipesPerPage
-  );
-
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isCalendarModalOpen, setIsCalendarModalOpen] = useState(false);
   const [selectedRecipe, setSelectedRecipe] = useState(null);
+  const [recipes, setRecipes] = useState([]); // State untuk menyimpan hasil pencarian
+  const recipesPerPage = 4;
 
-  const openModal = (recipe) => {
-    setSelectedRecipe(recipe);
-    setIsModalOpen(true);
+  const handleSearch = async (query) => {
+    if (!query) return;
+    try {
+      const response = await fetch(
+        `https://www.themealdb.com/api/json/v1/1/search.php?s=${query}`
+      );
+      const data = await response.json();
+      setRecipes(data.meals || []); // Set hasil pencarian, default ke array kosong jika tidak ada hasil
+    } catch (error) {
+      console.error("Error fetching recipes:", error);
+    }
   };
 
-  const closeModal = () => setIsModalOpen(false);
-  const closeCalendarModal = () => setIsCalendarModalOpen(false);
+  const totalPages = Math.ceil(recipes.length / recipesPerPage);
 
-  const handleConfirm = () => {
-    setIsModalOpen(false);
-    setIsCalendarModalOpen(true);
-  };
+  const indexOfLastRecipe = currentPage * recipesPerPage;
+  const indexOfFirstRecipe = indexOfLastRecipe - recipesPerPage;
+  const currentRecipes = recipes.slice(indexOfFirstRecipe, indexOfLastRecipe);
 
-  const handleSave = (date) => {
-    console.log(
-      `Recipe "${selectedRecipe.name}" scheduled on ${date.toDateString()}`
-    );
-    setIsCalendarModalOpen(false);
-  };
+  // Modal
 
   const handleRecipeClick = (recipe) => {
     setSelectedRecipe(recipe);
@@ -73,59 +68,48 @@ export default function RecipePage() {
       <Navbar />
       <div className="flex flex-col gap-6 p-6">
         <div className="relative top-5 mx-auto w-full h-full max-w-xl flex items-center z-10">
-          <SearchBox />
+          <SearchBox onSearch={handleSearch} />
         </div>
 
-        {/* {selectedRecipe && (
-          <div className="p-4 mt-6 bg-orange-100 rounded-md shadow-md w-4/5 mx-auto">
-            <DetailRecipe recipe={selectedRecipe} onClose={closeDetail} />
-          </div>
-        )}
-
-        <div className="p-6 mt-3">
-          <div className="grid grid-cols-4">
-            {currentRecipes.map((recipe) => (
-              <div
-                key={recipe.id}
-                onClick={() => handleRecipeClick(recipe)}
-                className="cursor-pointer"
-              >
-                <RecipeCard recipe={recipe} />
-              </div>
-            ))}
-          </div> */}
         {selectedRecipe && (
           <div className="p-4 mt-6 bg-orange-100 rounded-md shadow-md w-4/5 mx-auto">
-            <DetailRecipe recipe={selectedRecipe} onClose={closeDetail} />
+            <DetailRecipe
+              recipe={{
+                idMeal: selectedRecipe.idMeal,
+                name: selectedRecipe.strMeal,
+                image: selectedRecipe.strMealThumb,
+                ingredients: selectedRecipe.strIngredient1,
+              }}
+              onClose={closeDetail}
+            />
           </div>
         )}
 
         {/* Daftar Recipe Cards */}
         <div className="p-6 mt-3">
           <div className="grid grid-cols-4 gap-4">
-            {currentRecipes.map((recipe) =>
-              recipe.id === selectedRecipe?.id ? null : ( // Hanya sembunyikan kartu yang dipilih
-                <div
-                  key={recipe.id}
-                  onClick={() => handleRecipeClick(recipe)}
-                  className="cursor-pointer"
-                >
-                  <RecipeCard recipe={recipe} />
-                </div>
-              )
+            {currentRecipes.map(
+              (
+                recipe // Use currentRecipes instead of recipes
+              ) =>
+                recipe.idMeal === selectedRecipe?.idMeal ? null : ( // Hanya sembunyikan kartu yang dipilih
+                  <div
+                    key={recipe.idMeal}
+                    onClick={() => handleRecipeClick(recipe)}
+                    className="cursor-pointer"
+                  >
+                    <RecipeCard
+                      recipe={{
+                        idMeal: recipe.idMeal,
+                        name: recipe.strMeal,
+                        image: recipe.strMealThumb,
+                        ingredients: recipe.strIngredient1,
+                      }}
+                    />
+                  </div>
+                )
             )}
           </div>
-          <Modal
-            isOpen={isModalOpen}
-            onClose={closeModal}
-            onConfirm={handleConfirm}
-          />
-          <CalendarModal
-            isOpen={isCalendarModalOpen}
-            onClose={closeCalendarModal}
-            onSave={handleSave}
-            recipe={selectedRecipe}
-          />
           <Pagination
             currentPage={currentPage}
             totalPages={totalPages}

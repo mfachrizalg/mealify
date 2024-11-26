@@ -1,43 +1,39 @@
-import { ArrowLeftIcon, ArrowRightIcon } from "@heroicons/react/24/solid";
-
 export default function Pagination({ currentPage, totalPages, onPageChange }) {
+  const handlePrevious = () => {
+    if (currentPage > 1) onPageChange(currentPage - 1);
+  };
+
+  const handleNext = () => {
+    if (currentPage < totalPages) onPageChange(currentPage + 1);
+  };
+
   return (
-    <div className="flex justify-center items-center gap-2 mt-6">
-      <ArrowLeftIcon
-        onClick={() => currentPage > 1 && onPageChange(currentPage - 1)} // Add onClick logic
-        className={`w-5 h-5 text-black ${
-          currentPage === 1
-            ? "text-gray-500 cursor-not-allowed"
-            : "cursor-pointer"
-        }`}
-      />
+    <div className="flex justify-center items-center space-x-4 my-10">
       <button
-        onClick={() => onPageChange(currentPage - 1)}
+        onClick={handlePrevious}
         disabled={currentPage === 1}
-        className="px-4 py-2 text-black rounded disabled:text-gray-500"
+        className={`px-4 py-2 rounded-md ${
+          currentPage === 1
+            ? "bg-gray-300 text-black cursor-not-allowed"
+            : "bg-orange-500 text-white hover:bg-orange-600"
+        }`}
       >
         Previous
       </button>
-      <p className="text-black">
+      <span className="text-black">
         Page {currentPage} of {totalPages}
-      </p>
+      </span>
       <button
-        onClick={() => onPageChange(currentPage + 1)}
+        onClick={handleNext}
         disabled={currentPage === totalPages}
-        className="px-4 py-2 text-black rounded disabled:text-gray-500"
+        className={`px-4 py-2 rounded-md ${
+          currentPage === totalPages
+            ? "bg-gray-300 text-black cursor-not-allowed"
+            : "bg-orange-500 text-white hover:bg-orange-600"
+        }`}
       >
         Next
       </button>
-      <ArrowRightIcon
-        onClick={() =>
-          currentPage < totalPages && onPageChange(currentPage + 1)
-        } // Add onClick logic
-        className={`w-5 h-5 text-black ${
-          currentPage === totalPages
-            ? "text-gray-500 cursor-not-allowed"
-            : "cursor-pointer"
-        }`}
-      />
     </div>
   );
 }
