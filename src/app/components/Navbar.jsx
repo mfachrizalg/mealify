@@ -59,7 +59,7 @@ export default function Navbar() {
           <Link href="/scheduler" className="hover:underline">
             Jadwal
           </Link>
-          <Link href="#" className="hover:underline">
+          <Link href="/bookmark" className="hover:underline">
             Bookmark
           </Link>
         </nav>
@@ -117,7 +117,7 @@ export default function Navbar() {
             Jadwal
           </Link>
           <Link
-            href="#"
+            href="/bookmark"
             className="block text-orange-500 font-medium hover:underline"
             onClick={() => setMenuOpen(false)}
           >
