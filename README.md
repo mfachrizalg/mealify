@@ -1,7 +1,3 @@
-Here’s an enhanced and more engaging version of your README for **Mealify**:
-
----
-
 # 🌟 **Mealify - Your Personal Meal Planning Assistant** 🍳🍴  
 
 Welcome to **Mealify**, your ultimate meal planning companion! Whether you're a foodie, a busy professional, or just someone who loves staying organized, **Mealify** has you covered. Discover exciting recipes for breakfast, lunch, and dinner, and streamline your meal prep with just a few clicks. Say goodbye to mealtime stress and hello to effortless planning!  
