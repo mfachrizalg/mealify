@@ -1,5 +1,6 @@
 "use client";
 import React, { useState } from "react";
+import axios from "axios"; // Import axios
 import SearchBox from "../components/SearchBox";
 import Navbar from "../components/Navbar";
 import Layout from "../components/Layout";
@@ -8,23 +9,6 @@ import Pagination from "../components/Pagination";
 import Modal from "../components/Modal";
 import CalendarModal from "../components/CalendarModal";
 import DetailRecipe from "../components/DetailRecipe";
-
-const dummyRecipes = [
-  {
-    id: 1,
-    name: "Seafood Fried Rice",
-    ingredients: "Shrimp, Egg, Rice",
-    image:
-      "https://www.aheadofthyme.com/wp-content/uploads/2020/04/10-minute-seafood-fried-rice-6.jpg",
-  },
-  {
-    id: 2,
-    name: "Sausage Fried Rice",
-    ingredients: "Sausage, Egg, Rice",
-    image:
-      "https://www.seriouseats.com/thmb/jsfvb5RyxampT3ZdqOgZTEV4j88=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/stir-fried-rice-with-chinese-sausage-recipe-hero-03_1-96ea47b756444693ae3cbd60ec7afe02.JPG",
-  },
-];
 
 export default function RecipePage() {
   const [currentPage, setCurrentPage] = useState(1);
@@ -37,11 +21,10 @@ export default function RecipePage() {
   const handleSearch = async (query) => {
     if (!query) return;
     try {
-      const response = await fetch(
-        `https://www.themealdb.com/api/json/v1/1/search.php?s=${query}`
+      const response = await axios.get(
+        `https://backend-paw-delta.vercel.app/api/meal/?name=${query}`
       );
-      const data = await response.json();
-      setRecipes(data.meals || []); // Set hasil pencarian, default ke array kosong jika tidak ada hasil
+      setRecipes(response.data.meals || []); // Set hasil pencarian, default ke array kosong jika tidak ada hasil
     } catch (error) {
       console.error("Error fetching recipes:", error);
     }
@@ -88,26 +71,23 @@ export default function RecipePage() {
         {/* Daftar Recipe Cards */}
         <div className="p-6 mt-3">
           <div className="grid grid-cols-4 gap-4">
-            {currentRecipes.map(
-              (
-                recipe // Use currentRecipes instead of recipes
-              ) =>
-                recipe.idMeal === selectedRecipe?.idMeal ? null : ( // Hanya sembunyikan kartu yang dipilih
-                  <div
-                    key={recipe.idMeal}
-                    onClick={() => handleRecipeClick(recipe)}
-                    className="cursor-pointer"
-                  >
-                    <RecipeCard
-                      recipe={{
-                        idMeal: recipe.idMeal,
-                        name: recipe.strMeal,
-                        image: recipe.strMealThumb,
-                        ingredients: recipe.strIngredient1,
-                      }}
-                    />
-                  </div>
-                )
+            {currentRecipes.map((recipe) =>
+              recipe.idMeal === selectedRecipe?.idMeal ? null : ( // Hanya sembunyikan kartu yang dipilih
+                <div
+                  key={recipe.idMeal}
+                  onClick={() => handleRecipeClick(recipe)}
+                  className="cursor-pointer"
+                >
+                  <RecipeCard
+                    recipe={{
+                      idMeal: recipe.idMeal,
+                      name: recipe.strMeal,
+                      image: recipe.strMealThumb,
+                      ingredients: recipe.strIngredient1,
+                    }}
+                  />
+                </div>
+              )
             )}
           </div>
           <Pagination
