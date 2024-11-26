@@ -147,7 +147,7 @@ export default function Navbar() {
             </>
           ) : (
             <Link
-              href="/signup"
+              href="/auth/signup"
               className="block text-orange-500 font-medium hover:underline"
               onClick={() => setMenuOpen(false)}
             >

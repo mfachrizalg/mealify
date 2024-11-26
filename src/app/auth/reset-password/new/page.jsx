@@ -1,11 +1,11 @@
-'use client';
-import React, { useState } from 'react';
-import Image from 'next/image';
-import { PasswordCard } from "../../components/PasswordCard";
+"use client";
+import React, { useState } from "react";
+import Image from "next/image";
+import { PasswordCard } from "../../../components/PasswordCard";
 
 export default function NewPasswordPage() {
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState('');
+  const [message, setMessage] = useState("");
   const [showModal, setShowModal] = useState(false); // State untuk modal
 
   async function handleNewPassword(e) {
@@ -15,42 +15,44 @@ export default function NewPasswordPage() {
 
     // Validasi password
     if (newPassword.length < 8) {
-      setMessage('Password must be at least 8 characters long.');
+      setMessage("Password must be at least 8 characters long.");
       setShowModal(true);
       return;
     }
 
     if (!/[A-Z]/.test(newPassword) || !/[0-9]/.test(newPassword)) {
-      setMessage('Password must include at least one uppercase letter and one number.');
+      setMessage(
+        "Password must include at least one uppercase letter and one number."
+      );
       setShowModal(true);
       return;
     }
 
     if (newPassword !== confirmPassword) {
-      setMessage('Passwords do not match.');
+      setMessage("Passwords do not match.");
       setShowModal(true);
       return;
     }
 
     setLoading(true);
-    setMessage('');
+    setMessage("");
     try {
-      const response = await fetch('/api/new-password', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      const response = await fetch("/api/new-password", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ newPassword }),
       });
 
       if (!response.ok) {
-        throw new Error('Failed to reset password.');
+        throw new Error("Failed to reset password.");
       }
 
       // Jika sukses, tampilkan pesan sukses
-      setMessage('Password successfully reset. You can now log in.');
+      setMessage("Password successfully reset. You can now log in.");
       setShowModal(true);
     } catch (error) {
       // Jika gagal, tampilkan pesan error
-      setMessage('Something went wrong. Please try again.');
+      setMessage("Something went wrong. Please try again.");
       setShowModal(true);
     } finally {
       setLoading(false); // Selesai loading
@@ -81,7 +83,7 @@ export default function NewPasswordPage() {
           onSubmit={handleNewPassword}
         />
       </div>
-  
+
       {/* Decorative Images */}
       <Image
         src="/images/food10.svg"
@@ -96,7 +98,7 @@ export default function NewPasswordPage() {
         width={400}
         height={400}
       />
-  
+
       <Image
         src="/images/dotted.svg"
         alt="Decorative Dots"
@@ -104,7 +106,7 @@ export default function NewPasswordPage() {
         width={100}
         height={100}
       />
-  
+
       {/* Modal */}
       {showModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
@@ -121,4 +123,4 @@ export default function NewPasswordPage() {
       )}
     </div>
   );
-}  
+}

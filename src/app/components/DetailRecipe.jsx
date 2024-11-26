@@ -1,6 +1,38 @@
-import React from "react";
+import React, { useState } from "react";
+import Modal from "./Modal"; // Impor Modal komponen
+import CalendarModal from "./CalendarModal"; // Impor CalendarModal komponen
 
 export default function DetailRecipe({ recipe, onClose }) {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isCalendarModalOpen, setIsCalendarModalOpen] = useState(false);
+  const [selectedRecipe, setSelectedRecipe] = useState(null);
+
+  // Fungsi untuk membuka modal konfirmasi
+  const openModal = (recipe) => {
+    setSelectedRecipe(recipe);
+    setIsModalOpen(true);
+  };
+
+  // Fungsi untuk menutup modal konfirmasi
+  const closeModal = () => setIsModalOpen(false);
+
+  // Fungsi untuk menutup modal kalender
+  const closeCalendarModal = () => setIsCalendarModalOpen(false);
+
+  // Fungsi yang dijalankan saat pengguna mengonfirmasi untuk menambahkan ke jadwal
+  const handleConfirm = () => {
+    setIsModalOpen(false); // Menutup modal konfirmasi
+    setIsCalendarModalOpen(true); // Membuka modal kalender
+  };
+
+  // Fungsi untuk menyimpan tanggal yang dipilih
+  const handleSave = (date) => {
+    console.log(
+      `Recipe "${selectedRecipe.name}" scheduled on ${date.toDateString()}`
+    );
+    setIsCalendarModalOpen(false); // Menutup modal kalender
+  };
+
   if (!recipe) return null;
 
   return (
@@ -29,6 +61,29 @@ export default function DetailRecipe({ recipe, onClose }) {
           </ul>
         </div>
       </div>
+
+      {/* Button to open modal */}
+      <button
+        onClick={() => openModal(recipe)} // Open modal on click
+        className="mt-4 bg-blue-500 text-white px-6 py-2 rounded-md"
+      >
+        Add to Schedule
+      </button>
+
+      {/* Modal component for confirmation */}
+      <Modal
+        isOpen={isModalOpen}
+        onClose={closeModal}
+        onConfirm={handleConfirm}
+      />
+
+      {/* Calendar modal component */}
+      <CalendarModal
+        isOpen={isCalendarModalOpen}
+        onClose={closeCalendarModal}
+        onSave={handleSave}
+        recipe={selectedRecipe}
+      />
     </div>
   );
 }
