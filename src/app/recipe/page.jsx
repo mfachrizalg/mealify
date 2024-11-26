@@ -63,11 +63,10 @@ export default function RecipePage() {
   const handleRecipeClick = (recipe) => {
     setSelectedRecipe(recipe);
   };
-  
+
   const closeDetail = () => {
     setSelectedRecipe(null);
   };
-  
 
   return (
     <Layout>
@@ -77,7 +76,7 @@ export default function RecipePage() {
           <SearchBox />
         </div>
 
-        {selectedRecipe && (
+        {/* {selectedRecipe && (
           <div className="p-4 mt-6 bg-orange-100 rounded-md shadow-md w-4/5 mx-auto">
             <DetailRecipe recipe={selectedRecipe} onClose={closeDetail} />
           </div>
@@ -94,6 +93,27 @@ export default function RecipePage() {
                 <RecipeCard recipe={recipe} />
               </div>
             ))}
+          </div> */}
+        {selectedRecipe && (
+          <div className="p-4 mt-6 bg-orange-100 rounded-md shadow-md w-4/5 mx-auto">
+            <DetailRecipe recipe={selectedRecipe} onClose={closeDetail} />
+          </div>
+        )}
+
+        {/* Daftar Recipe Cards */}
+        <div className="p-6 mt-3">
+          <div className="grid grid-cols-4 gap-4">
+            {currentRecipes.map((recipe) =>
+              recipe.id === selectedRecipe?.id ? null : ( // Hanya sembunyikan kartu yang dipilih
+                <div
+                  key={recipe.id}
+                  onClick={() => handleRecipeClick(recipe)}
+                  className="cursor-pointer"
+                >
+                  <RecipeCard recipe={recipe} />
+                </div>
+              )
+            )}
           </div>
           <Modal
             isOpen={isModalOpen}

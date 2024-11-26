@@ -12,6 +12,15 @@ const nextConfig = {
       },
     ],
   },
+  async redirects() {
+    return [
+      {
+        source: "/", // Halaman asal
+        destination: "/home", // Halaman tujuan
+        permanent: true, // Set true untuk redirect permanen (301)
+      },
+    ];
+  },
 };
 
 export default nextConfig;
