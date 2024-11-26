@@ -30,7 +30,7 @@ export default function RecipePage() {
       console.log(response);
       setRecipes(response.data || []); // Set hasil pencarian, default ke array kosong jika tidak ada hasil
     } catch (error) {
-      console.error("Error fetching recipes:", error);
+      console.log("Error fetching recipes:", error);
     }
   };
 
