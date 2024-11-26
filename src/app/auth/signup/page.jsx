@@ -22,57 +22,63 @@ export default function SignUp() {
         className="absolute top-0 right-0"
       />
 
-      <main className="flex flex-col items-center justify-center w-full px-6 sm:px-10 py-20 text-center">
-        <div className="relative z-10" style={{ marginBottom: "-1.5rem" }}>
+      <main className="flex flex-col items-center justify-center w-full px-4 sm:px-8 py-20">
+        {/* Title */}
+        <div className="relative z-10 mb-6">
           <h1
-            className="text-4xl font-bold text-white bg-[#F1D6A9]/75 px-8 py-2 rounded-lg shadow-lg"
+            className="text-3xl sm:text-4xl font-bold text-white bg-[#F1D6A9]/75 px-6 py-2 rounded-lg shadow-lg"
             style={{ fontFamily: "Poppins" }}
           >
             SIGN UP
           </h1>
         </div>
 
-        <div className="bg-[#F5682C]/75 rounded-2xl shadow-2xl flex flex-col sm:flex-row w-full sm:w-3/4 max-w-2xl py-10 px-10">
+        {/* Form Container */}
+        <div className="bg-[#F5682C]/75 rounded-2xl shadow-2xl flex flex-col sm:flex-row w-full sm:w-4/5 lg:w-2/3 max-w-4xl py-10 px-6 sm:px-12 gap-6">
           {/* Logo Section */}
-          <div className="w-full sm:w-1/3 p-5 flex justify-center items-center">
-            <Image src={Logo} width={200} height={200} alt="Mealify" />
+          <div className="flex justify-center items-center sm:w-1/3">
+            <Image src={Logo} width={150} height={150} alt="Mealify Logo" />
           </div>
-          {/* SignUp Section */}
-          <div className="w-full sm:w-2/3 p-5">
-            <div className="flex flex-col items-center">
-              {/* Form Fields */}
-              {["Email", "Password", "Username", "Phone Number"].map(
-                (label, index) => (
-                  <div key={index} className="mb-3 w-full sm:w-5/6">
-                    <p className="text-[#FFFFF5] text-left font-bold mb-1">
-                      {label}
-                    </p>
-                    <div className="bg-[#FFFFF5] p-1 sm:p-2 flex items-center rounded-md">
-                      <input
-                        type={label === "Password" ? "password" : "text"}
-                        name={label.toLowerCase().replace(" ", "_")}
-                        className="bg-[#FFFFF5] outline-none text-sm flex-1 p-1 text-black"
-                      />
-                    </div>
-                  </div>
-                )
-              )}
 
-              <button
-                className="bg-black hover:bg-[#F1D6A9]
-                text-[#FFFFF5] font-bold py-2 px-6 mt-4 rounded-lg w-full sm:w-5/6"
-                type="submit"
-              >
-                Register
-              </button>
-              <div className="flex flex-container align-middle gap-2">
-                <p className="flex">Already have an account?</p>
-                <div className="flex">
-                  <Link legacyBehavior href="/auth/login">
-                    <a className="text-[#FFFFF5] text-sm underline">Log In</a>
-                  </Link>
+          {/* SignUp Section */}
+          <div className="w-full sm:w-2/3 flex flex-col">
+            {/* Form Fields */}
+            {["Email", "Password", "Username", "Phone Number"].map(
+              (label, index) => (
+                <div key={index} className="mb-4 w-full">
+                  <label
+                    className="text-white font-bold text-left block mb-1"
+                    htmlFor={label.toLowerCase().replace(" ", "_")}
+                  >
+                    {label}
+                  </label>
+                  <div className="bg-[#FFFFF5] p-2 rounded-md">
+                    <input
+                      type={label === "Password" ? "password" : "text"}
+                      name={label.toLowerCase().replace(" ", "_")}
+                      id={label.toLowerCase().replace(" ", "_")}
+                      className="bg-transparent outline-none w-full text-black p-1"
+                      placeholder={`Enter your ${label}`}
+                    />
+                  </div>
                 </div>
-              </div>
+              )
+            )}
+
+            {/* Register Button */}
+            <button
+              className="bg-black hover:bg-[#F1D6A9] text-[#FFFFF5] font-bold py-2 px-6 mt-4 rounded-lg w-full"
+              type="submit"
+            >
+              Register
+            </button>
+
+            {/* Login Link */}
+            <div className="flex justify-center items-center mt-4">
+              <p className="text-sm text-white mr-2">Already have an account?</p>
+              <Link legacyBehavior href="/auth/login">
+                <a className="text-sm text-[#FFFFF5] underline">Log In</a>
+              </Link>
             </div>
           </div>
         </div>

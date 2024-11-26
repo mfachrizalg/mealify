@@ -31,7 +31,7 @@ export default function RecipeCard({ recipe, onRemoveBookmark, isBookmarkPage })
             onClick={onRemoveBookmark}
             className="mt-4 px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600"
           >
-            Hapus dari Bookmark
+            Remove From Bookmark
           </button>
         )}
       </div>

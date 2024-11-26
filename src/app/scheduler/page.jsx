@@ -49,24 +49,26 @@ const SchedulerPage = () => {
   return (
     <Layout>
       <Navbar />
-      <div className="mt-5 ml-5">
-        <ScheduleComponent
-          width="800px"
-          height="600px"
-          eventSettings={{
-            dataSource: recipeScheduleData,
-            fields: {
-              id: "Id",
-              subject: { name: "Subject" },
-              startTime: { name: "StartTime" },
-              endTime: { name: "EndTime" },
-              description: { name: "Description" },
-            },
-          }}
-          eventClick={handleEventClick} // Tambahkan event handler
-        >
-          <Inject services={[Day, Week, WorkWeek, Month, Agenda]} />
-        </ScheduleComponent>
+      <div className="mt-5 flex justify-center items-center">
+        <div className="w-full max-w-5xl">
+          <ScheduleComponent
+            width="100%"
+            height="600px"
+            eventSettings={{
+              dataSource: recipeScheduleData,
+              fields: {
+                id: "Id",
+                subject: { name: "Subject" },
+                startTime: { name: "StartTime" },
+                endTime: { name: "EndTime" },
+                description: { name: "Description" },
+              },
+            }}
+            eventClick={handleEventClick} // Tambahkan event handler
+          >
+            <Inject services={[Day, Week, WorkWeek, Month, Agenda]} />
+          </ScheduleComponent>
+        </div>
       </div>
     </Layout>
   );

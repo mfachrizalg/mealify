@@ -73,7 +73,7 @@ export default function RecipePage() {
       <div className="flex flex-col gap-6 p-6">
         {/* Halaman Detail */}
         {selectedRecipe && (
-          <div className="p-4 mt-6 bg-orange-100 rounded-md shadow-md w-4/5 mx-auto">
+          <div className="p-4 mt-6 bg-orange-100 rounded-md shadow-md w-full md:w-4/5 mx-auto">
             <DetailRecipe recipe={selectedRecipe} onClose={closeDetail} />
           </div>
         )}
@@ -85,7 +85,7 @@ export default function RecipePage() {
               There's no menu here
             </div>
           ) : (
-            <div className="grid grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
               {bookmarkedRecipes.map((recipe) => (
                 <div key={recipe.id}>
                   <RecipeCard
@@ -108,11 +108,13 @@ export default function RecipePage() {
             onSave={handleSave}
             recipe={selectedRecipe}
           />
-          <Pagination
-            currentPage={currentPage}
-            totalPages={totalPages}
-            onPageChange={setCurrentPage}
-          />
+          <div className="mt-6 flex justify-center">
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={setCurrentPage}
+            />
+          </div>
         </div>
       </div>
     </Layout>
