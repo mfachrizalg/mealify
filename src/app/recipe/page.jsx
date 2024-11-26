@@ -7,6 +7,7 @@ import RecipeCard from "../components/RecipeCard";
 import Pagination from "../components/Pagination";
 import Modal from "../components/Modal";
 import CalendarModal from "../components/CalendarModal";
+import DetailRecipe from "../components/DetailRecipe";
 
 const dummyRecipes = [
   {
@@ -59,19 +60,35 @@ export default function RecipePage() {
     setIsCalendarModalOpen(false);
   };
 
+  const handleRecipeClick = (recipe) => {
+    setSelectedRecipe(recipe);
+  };
+  
+  const closeDetail = () => {
+    setSelectedRecipe(null);
+  };
+  
+
   return (
     <Layout>
       <Navbar />
-      <div className="flex flex-col">
+      <div className="flex flex-col gap-6 p-6">
         <div className="relative top-5 mx-auto w-full h-full max-w-xl flex items-center z-10">
           <SearchBox />
         </div>
+
+        {selectedRecipe && (
+          <div className="p-4 mt-6 bg-orange-100 rounded-md shadow-md w-4/5 mx-auto">
+            <DetailRecipe recipe={selectedRecipe} onClose={closeDetail} />
+          </div>
+        )}
+
         <div className="p-6 mt-3">
           <div className="grid grid-cols-4">
             {currentRecipes.map((recipe) => (
               <div
                 key={recipe.id}
-                onClick={() => openModal(recipe)}
+                onClick={() => handleRecipeClick(recipe)}
                 className="cursor-pointer"
               >
                 <RecipeCard recipe={recipe} />
