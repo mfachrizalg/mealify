@@ -6,7 +6,7 @@ export default function RecipeCard({ recipe }) {
   const [isExpanded, setIsExpanded] = useState(false);
 
   // Set a maximum length for the ingredients to display
-  const maxLength = 100; // Adjust this value as needed
+  const maxLength = 4; // Adjust this value as needed
 
   // Truncate ingredients if they exceed the maximum length
   const displayIngredients = isExpanded
