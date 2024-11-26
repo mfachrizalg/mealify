@@ -45,6 +45,16 @@ Mealify is **perfect for**:
 
 ---
 
+## 👥 Kelompok 14: 
+- **Anggota Tim**:
+- 1. Anggito Muhammmad Amien (22/498140/TK/54627)
+  2. Jovita Ayu Ramaniyya (22/503808/TK/55072)
+  3. Muhammad Fachrizal Giffari (22/504570/TK/55192)
+  4. Dhimas Nurhanindya Putra (22/505433/TK/55309)
+  5. Della Febi Alfian (22/505892/TK/55393) 
+
+---
+
 ## 🚀 **Getting Started**  
 
 Follow these simple steps to start using **Mealify** today:  
