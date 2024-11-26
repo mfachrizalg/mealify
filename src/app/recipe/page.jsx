@@ -40,9 +40,20 @@ export default function RecipePage() {
   const [isCalendarModalOpen, setIsCalendarModalOpen] = useState(false);
   const [selectedRecipe, setSelectedRecipe] = useState(null);
 
-  const openModal = (recipe) => {
-    setSelectedRecipe(recipe);
-    setIsModalOpen(true);
+  const handleSearch = async (query) => {
+    if (!query) return;
+    try {
+      console.log(
+        `https://backend-paw-delta.vercel.app/api/meal?name=${query}`
+      );
+      const response = await axios.get(
+        `https://backend-paw-delta.vercel.app/api/meal?name=${query}`
+      );
+      console.log(response);
+      setRecipes(response.data || []); // Set hasil pencarian, default ke array kosong jika tidak ada hasil
+    } catch (error) {
+      console.log("Error fetching recipes:", error);
+    }
   };
 
   const closeModal = () => setIsModalOpen(false);
@@ -79,8 +90,21 @@ export default function RecipePage() {
 
         {/* Detail Recipe */}
         {selectedRecipe && (
+
           <div className="p-4 mt-6 bg-orange-100 rounded-md shadow-md w-full md:w-4/5 mx-auto">
             <DetailRecipe recipe={selectedRecipe} onClose={closeDetail} />
+          
+          <div className="p-4 mt-6 bg-orange-100 rounded-md shadow-md w-4/5 mx-auto">
+            <DetailRecipe
+              recipe={{
+                idMeal: selectedRecipe.mealDBid,
+                name: selectedRecipe.name,
+                image: selectedRecipe.image,
+                ingredients: selectedRecipe.ingredients,
+              }}
+              onClose={closeDetail}
+            />
+
           </div>
         )}
 
@@ -88,13 +112,21 @@ export default function RecipePage() {
         <div className="p-6 mt-3">
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
             {currentRecipes.map((recipe) =>
-              recipe.id === selectedRecipe?.id ? null : ( // Hanya sembunyikan kartu yang dipilih
+
+              recipe.mealDBid === selectedRecipe?.mealDBid ? null : ( // Hanya sembunyikan kartu yang dipilih
                 <div
-                  key={recipe.id}
+                  key={recipe.mealDBid}
                   onClick={() => handleRecipeClick(recipe)}
                   className="cursor-pointer"
                 >
-                  <RecipeCard recipe={recipe} />
+                  <RecipeCard
+                    recipe={{
+                      idMeal: recipe.mealDBid,
+                      name: recipe.name,
+                      image: recipe.image,
+                      ingredients: recipe.ingredients,
+                    }}
+                  />
                 </div>
               )
             )}

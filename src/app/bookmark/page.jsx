@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import Navbar from "../components/Navbar";
 import Layout from "../components/Layout";
-import RecipeCard from "../components/RecipeCard";
+import BookmarkCard from "../components/BookmarkCard";
 import Pagination from "../components/Pagination";
 import Modal from "../components/Modal";
 import CalendarModal from "../components/CalendarModal";
@@ -88,7 +88,7 @@ export default function RecipePage() {
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
               {bookmarkedRecipes.map((recipe) => (
                 <div key={recipe.id}>
-                  <RecipeCard
+                  <BookmarkCard
                     recipe={recipe}
                     isBookmarkPage={true} // Menandai ini halaman bookmark
                     onRemoveBookmark={() => handleRemoveBookmark(recipe.id)}
