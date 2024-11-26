@@ -55,9 +55,14 @@ export default function DetailRecipe({ recipe, onClose }) {
         <div className="ml-6">
           <h3 className="text-lg font-semibold text-black">Ingredients:</h3>
           <ul className="list-disc ml-4 text-black">
-            {recipe.ingredients.split(", ").map((ingredient, index) => (
-              <li key={index}>{ingredient}</li>
-            ))}
+            {Array.isArray(recipe.ingredients) &&
+            recipe.ingredients.length > 0 ? (
+              recipe.ingredients.map((ingredient, index) => (
+                <li key={`${index}+0`}>{ingredient}</li>
+              ))
+            ) : (
+              <li>No ingredients available</li>
+            )}
           </ul>
         </div>
       </div>

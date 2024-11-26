@@ -21,10 +21,14 @@ export default function RecipePage() {
   const handleSearch = async (query) => {
     if (!query) return;
     try {
-      const response = await axios.get(
-        `https://backend-paw-delta.vercel.app/api/meal/?name=${query}`
+      console.log(
+        `https://backend-paw-delta.vercel.app/api/meal?name=${query}`
       );
-      setRecipes(response.data.meals || []); // Set hasil pencarian, default ke array kosong jika tidak ada hasil
+      const response = await axios.get(
+        `https://backend-paw-delta.vercel.app/api/meal?name=${query}`
+      );
+      console.log(response);
+      setRecipes(response.data || []); // Set hasil pencarian, default ke array kosong jika tidak ada hasil
     } catch (error) {
       console.error("Error fetching recipes:", error);
     }
@@ -58,10 +62,10 @@ export default function RecipePage() {
           <div className="p-4 mt-6 bg-orange-100 rounded-md shadow-md w-4/5 mx-auto">
             <DetailRecipe
               recipe={{
-                idMeal: selectedRecipe.idMeal,
-                name: selectedRecipe.strMeal,
-                image: selectedRecipe.strMealThumb,
-                ingredients: selectedRecipe.strIngredient1,
+                idMeal: selectedRecipe.mealDBid,
+                name: selectedRecipe.name,
+                image: selectedRecipe.image,
+                ingredients: selectedRecipe.ingredients,
               }}
               onClose={closeDetail}
             />
@@ -72,18 +76,18 @@ export default function RecipePage() {
         <div className="p-6 mt-3">
           <div className="grid grid-cols-4 gap-4">
             {currentRecipes.map((recipe) =>
-              recipe.idMeal === selectedRecipe?.idMeal ? null : ( // Hanya sembunyikan kartu yang dipilih
+              recipe.mealDBid === selectedRecipe?.mealDBid ? null : ( // Hanya sembunyikan kartu yang dipilih
                 <div
-                  key={recipe.idMeal}
+                  key={recipe.mealDBid}
                   onClick={() => handleRecipeClick(recipe)}
                   className="cursor-pointer"
                 >
                   <RecipeCard
                     recipe={{
-                      idMeal: recipe.idMeal,
-                      name: recipe.strMeal,
-                      image: recipe.strMealThumb,
-                      ingredients: recipe.strIngredient1,
+                      idMeal: recipe.mealDBid,
+                      name: recipe.name,
+                      image: recipe.image,
+                      ingredients: recipe.ingredients,
                     }}
                   />
                 </div>
