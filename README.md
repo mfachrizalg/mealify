@@ -95,6 +95,3 @@ From discovering mouthwatering recipes to planning your week like a pro, **Meali
 
 ## Deployed Link
 🌍 **Deployed Link**: [Mealify Deployed](https://mealify-roan.vercel.app/)
-
----
-Let me know if you'd like to tweak the tone further! 😊
