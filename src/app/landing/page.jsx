@@ -1,10 +1,17 @@
+"use client";
 import Image from "next/image";
 import Signinbar from "../components/Signinbar";
 import food5 from "../../../public/images/food5.svg";
 import Layout from "../components/Layout";
 import Navbar from "../components/Navbar";
+import { useRouter } from "next/navigation";
 
 export default function LandingPage() {
+  const router = useRouter(); // Use Next.js router for navigation
+
+  const handleNavigate = () => {
+    router.push("/auth/login");
+  };
   return (
     <Layout>
       {/* Header */}
@@ -32,7 +39,10 @@ export default function LandingPage() {
                 placeholder=""
                 className="p-4 rounded-l-md border border-gray-300 flex-1 focus-within:text-black focus:ring-orange-500"
               />
-              <button className="px-8 py-4 bg-orange-500 text-white font-semibold rounded-r-md hover:bg-orange-600 transition-colors">
+              <button
+                onClick={handleNavigate}
+                className="px-8 py-4 bg-orange-500 text-white font-semibold rounded-r-md hover:bg-orange-600 transition-colors"
+              >
                 Get started
               </button>
             </div>

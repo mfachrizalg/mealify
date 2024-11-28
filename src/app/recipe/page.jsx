@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios"; // Import axios
 import SearchBox from "../components/SearchBox";
 import Navbar from "../components/Navbar";
@@ -9,14 +9,25 @@ import Pagination from "../components/Pagination";
 import Modal from "../components/Modal";
 import CalendarModal from "../components/CalendarModal";
 import DetailRecipe from "../components/DetailRecipe";
+import { useSearchParams } from "next/navigation";
 
 export default function RecipePage() {
+  const searchParams = useSearchParams(); // Hook to access query parameters
+  const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isCalendarModalOpen, setIsCalendarModalOpen] = useState(false);
   const [selectedRecipe, setSelectedRecipe] = useState(null);
   const [recipes, setRecipes] = useState([]); // State untuk menyimpan hasil pencarian
   const recipesPerPage = 4;
+
+  useEffect(() => {
+    // Get the 'search' query parameter
+    const query = searchParams.get("search");
+    if (query) {
+      handleSearch(query); // Set the retrieved query value to state
+    }
+  }, [searchParams]);
 
   const handleSearch = async (query) => {
     if (!query) return;

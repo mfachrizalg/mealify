@@ -9,13 +9,19 @@ import Layout from "../../components/Layout";
 import Link from "next/link";
 import Navbar from "@/app/components/Navbar";
 import axios from "axios";
-import Cookies from "js-cookie";
+import ConfirmModal from "@/app/components/ConfirmModal";
 
 export default function Login() {
+  // State untuk menyimpan email dan password
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  // State untuk menyimpan error
   const [error, setError] = useState(null);
+  // State untuk menandakan apakah komponen sudah di-mount
   const [isMounted, setIsMounted] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false); // State to manage modal visibility
+  const [modalMessage, setModalMessage] = useState(""); // State to manage modal message
+  const [modalRoute, setModalRoute] = useState(""); // State to manage modal route
   const router = useRouter();
 
   useEffect(() => {
@@ -40,14 +46,28 @@ export default function Login() {
         console.log("Token:", token);
         // Simpan token JWT di localStorage
         localStorage.setItem("token", token);
-        // Cookies.set("jwt", token, { expires: 1 / 24 }); // 1 jam = 1/24 hari
-        // Redirect ke /home
-        router.push("/home");
+
+        // Show the success modal
+        setModalMessage("Login Successful!");
+        setModalRoute("/home");
+        setIsModalOpen(true);
       }
     } catch (err) {
-      console.error("Error during login:", err);
-      setError(err.response?.data?.message || "Failed to login.");
+      // console.error("Error during login:", err);
+      // setError(err.response?.data?.message || "Failed to login.");
+      setModalMessage("Login Failed: " + err.response.data.errors);
+      setModalRoute("#");
+      setIsModalOpen(true);
     }
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleConfirmModal = () => {
+    setIsModalOpen(false);
+    router.push(modalRoute);
   };
 
   return (
@@ -128,6 +148,15 @@ export default function Login() {
           </div>
         </div>
       </main>
+
+      {/* Confirm Modal */}
+      <ConfirmModal
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+        onConfirm={handleConfirmModal}
+        message={modalMessage}
+        route={modalRoute}
+      />
     </Layout>
   );
 }

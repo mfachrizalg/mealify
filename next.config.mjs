@@ -16,7 +16,7 @@ const nextConfig = {
     return [
       {
         source: "/", // Halaman asal
-        destination: "/home", // Halaman tujuan
+        destination: "/landing", // Halaman tujuan
         permanent: true, // Set true untuk redirect permanen (301)
       },
     ];

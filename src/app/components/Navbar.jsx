@@ -9,6 +9,7 @@ import {
   XMarkIcon,
 } from "@heroicons/react/24/solid";
 import Cookies from "js-cookie";
+import axios from "axios";
 
 export default function Navbar() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -19,12 +20,23 @@ export default function Navbar() {
     // Check for JWT token in localStorage
 
     const token = localStorage.getItem("token");
-    console.log(token);
+    console.log("token", token);
     setIsAuthenticated(!!token);
   }, []);
 
   const handleLogout = () => {
-    localStorage.removeItem("authToken");
+    // api call to logout
+    try {
+      axios.post("https://backend-paw-delta.vercel.app/api/logout", {
+        headers: {
+          Authorization: `Bearer ${Cookies.get("token")}`,
+        },
+      });
+    } catch (error) {
+      console.error("Error logging out:", error);
+    }
+    // Remove the token from localStorage
+    localStorage.removeItem("token");
     setIsAuthenticated(false);
     setDropdownVisible(false);
     setMenuOpen(false); // Close the menu after logout
@@ -56,7 +68,7 @@ export default function Navbar() {
 
         {/* Desktop Navbar */}
         <nav className="hidden lg:flex space-x-8 text-white font-medium">
-          <Link href="/recipe" className="hover:underline">
+          <Link href="/home" className="hover:underline">
             Resep
           </Link>
           <Link href="/scheduler" className="hover:underline">
@@ -106,7 +118,7 @@ export default function Navbar() {
       {menuOpen && (
         <nav className="lg:hidden mt-4 bg-white rounded-lg shadow-lg p-4 space-y-4">
           <Link
-            href="/recipe"
+            href="/home"
             className="block text-orange-500 font-medium hover:underline"
             onClick={() => setMenuOpen(false)}
           >

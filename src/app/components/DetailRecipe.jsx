@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Modal from "./Modal"; // Impor Modal komponen
 import CalendarModal from "./CalendarModal"; // Impor CalendarModal komponen
+import axios from "axios"; // Impor axios
 
 export default function DetailRecipe({ recipe, onClose }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -26,11 +27,51 @@ export default function DetailRecipe({ recipe, onClose }) {
   };
 
   // Fungsi untuk menyimpan tanggal yang dipilih
-  const handleSave = (date) => {
+  const handleSave = async (fullDate) => {
     console.log(
-      `Recipe "${selectedRecipe.name}" scheduled on ${date.toDateString()}`
+      `Recipe "${selectedRecipe.name}" scheduled on ${fullDate.toISOString()}`
     );
-    setIsCalendarModalOpen(false); // Menutup modal kalender
+    try {
+      if (!selectedRecipe) {
+        throw new Error("No recipe selected.");
+      }
+
+      // Menyiapkan payload
+      const payload = {
+        mealDBid: selectedRecipe.id,
+        startDate: fullDate.toISOString(), // Format tanggal ISO
+      };
+
+      console.log("Payload to be sent:", payload);
+
+      // Memanggil API
+      const response = await axios.post(
+        "https://backend-paw-delta.vercel.app/api/meal/schedule",
+        payload,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to schedule the recipe.");
+      }
+
+      const data = await response.json();
+      console.log("Recipe scheduled successfully:", data);
+      alert(
+        `Recipe "${
+          selectedRecipe.name
+        }" scheduled on ${fullDate.toDateString()}`
+      );
+    } catch (error) {
+      console.error("Error scheduling the recipe:", error);
+      alert("Failed to schedule the recipe. Please try again.");
+    } finally {
+      setIsCalendarModalOpen(false); // Menutup modal kalender
+    }
   };
 
   // Fungsi untuk menambahkan ke bookmark
