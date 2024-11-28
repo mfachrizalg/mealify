@@ -1,33 +1,62 @@
-# Mealify - Your Personal Meal Planning Assistant 🍳🍴
+# 🌟 **Mealify - Your Personal Meal Planning Assistant** 🍳🍴  
 
-Mealify is a user-friendly website that serves as a comprehensive resource for discovering delicious recipes suitable for breakfast, lunch, and dinner. Whether you're looking for inspiration for today's meals or planning ahead for the week, Mealify provides a wide variety of recipes to suit every taste and dietary preference.
+Welcome to **Mealify**, your ultimate meal planning companion! Whether you're a foodie, a busy professional, or just someone who loves staying organized, **Mealify** has you covered. Discover exciting recipes for breakfast, lunch, and dinner, and streamline your meal prep with just a few clicks. Say goodbye to mealtime stress and hello to effortless planning!  
 
-One of Mealify’s standout features is its meal scheduling tool, which allows users to easily add selected recipes to their daily or weekly schedule. With this feature, you can stay organized and receive timely reminders about what to cook and when—making meal planning stress-free and efficient.
+---
 
-## Key Features:
+## ✨ **Features That Make Mealify Special**  
 
-- **Extensive Recipe Collection**: Browse a diverse range of recipes for breakfast, lunch, and dinner.
-- **Meal Scheduling**: Add recipes to your personal meal planner and set reminders for specific days and times.
-- **Customization**: Adapt the schedule to suit your unique routine and dietary goals.
-- **User-Friendly Interface**: Enjoy an intuitive and visually appealing design that makes meal planning a breeze.
+### 🥘 **Explore Delicious Recipes**  
+Browse through an extensive collection of recipes tailored for any meal of the day. From quick breakfasts to hearty dinners, there’s something for everyone.  
 
-## Why Choose Mealify?
-Mealify is perfect for individuals and families who want to:
+### 🗓️ **Effortless Meal Scheduling**  
+Plan ahead by adding recipes to your daily or weekly schedule. Stay organized and never worry about "What's for dinner?" again!  
 
-Save time by organizing their meals in advance.
-Discover new and exciting recipes for everyday cooking.
-Maintain a healthy and balanced diet by sticking to a planned schedule.
+### 🎯 **Bookmark Recipes**  
+Bookmark your favorite meal recipes to fit your lifestyle, dietary preferences, and nutritional goals. **Mealify** adapts to you.  
 
-## 🔗 Links
-https://drive.google.com/drive/folders/1HQZoPixgy_8IgZMrR2Gis--wIB-WZaVr?usp=sharing
+### 🚀 **User-Friendly Interface**  
+Enjoy an intuitive, sleek, and visually appealing design that simplifies your meal-planning journey.  
 
-## Get Started
+---
 
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+## 💡 **Why Choose Mealify?**  
 
-## Getting Started
+Mealify is **perfect for**:  
+✔️ **Saving Time**: No more last-minute decision-making or chaotic grocery runs.  
+✔️ **Inspiring Creativity**: Discover new recipes and diversify your meal choices.  
+✔️ **Staying Healthy**: Stick to a balanced, planned diet with ease.  
+✔️ **Family-Friendly**: Make meal planning enjoyable for the whole family.  
 
-First, run the development server:
+---
+
+## 🌐 **Links & Resources**  
+
+- 🔗 **Presentation Video**: [Presentation Video Here](https://drive.google.com/drive/folders/1HQZoPixgy_8IgZMrR2Gis--wIB-WZaVr?usp=sharing)  
+- 📚 **Front End Repository**: [FE Repo Here](https://github.com/mfachrizalg/mealify)  
+- 🛠️ **Back End Repository**: [BE Repo Here](https://github.com/mfachrizalg/backend-paw) 
+- 🌍 **Deployed Link**: [Mealify Deployed](https://mealify-roan.vercel.app/)
+- 💻 **Presentation File**: [Presentation File Here](https://docs.google.com/presentation/d/10UMJ2X5jyCIfYAUiEDsXdmdg9mYiktz97qwTCaqNST8/edit?usp=sharing)
+- 📃 **Documentation**: [Documentation Here](https://docs.google.com/document/d/1bPsulj_aAhHKPiIk6kgwSu5OKa_Af9Skj1j7zizU5QQ/edit?usp=sharing)
+
+---
+
+## 👥 Kelompok 14: 
+- **Anggota Tim**:
+  1. Anggito Muhammmad Amien (22/498140/TK/54627)
+  2. Jovita Ayu Ramaniyya (22/503808/TK/55072)
+  3. Muhammad Fachrizal Giffari (22/504570/TK/55192)
+  4. Dhimas Nurhanindya Putra (22/505433/TK/55309)
+  5. Della Febi Alfian (22/505892/TK/55393) 
+
+---
+
+## 🚀 **Getting Started**  
+
+Follow these simple steps to start using **Mealify** today:  
+
+### 1️⃣ Run the Development Server  
+Make sure you have Node.js installed, then run the following command:  
 
 ```bash
 npm run dev
@@ -37,25 +66,32 @@ yarn dev
 pnpm dev
 # or
 bun dev
-```
+```  
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) in your browser to access the app.  
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+### 2️⃣ Edit and Customize  
+Start editing the project by modifying `app/page.js`. Your changes will be updated instantly in the browser.  
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+## 🚢 **Deploying Mealify**  
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Easily deploy your Mealify app using **Vercel**, the creators of Next.js.  
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+1. Head to [Vercel's Deployment Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme).  
+2. Follow the guided steps to get your app live.  
 
-## Deploy on Vercel
+For more details, check out the official [Next.js Deployment Guide](https://nextjs.org/docs/app/building-your-application/deploying).  
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 🎉 **Let Mealify Transform Your Mealtime**  
+
+From discovering mouthwatering recipes to planning your week like a pro, **Mealify** is here to make cooking fun, organized, and stress-free. Get started today and enjoy the benefits of a smart meal planning assistant!  
+
+---
+
+## Deployed Link
+🌍 **Deployed Link**: [Mealify Deployed](https://mealify-roan.vercel.app/)
