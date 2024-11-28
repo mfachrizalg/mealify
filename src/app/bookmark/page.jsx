@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
 import Layout from "../components/Layout";
 import BookmarkCard from "../components/BookmarkCard";
@@ -8,32 +8,51 @@ import Modal from "../components/Modal";
 import CalendarModal from "../components/CalendarModal";
 import DetailRecipe from "../components/DetailRecipe";
 
-const dummyRecipes = [
-  {
-    id: 1,
-    name: "Seafood Fried Rice",
-    ingredients: "Shrimp, Egg, Rice",
-    image:
-      "https://www.aheadofthyme.com/wp-content/uploads/2020/04/10-minute-seafood-fried-rice-6.jpg",
-  },
-  {
-    id: 2,
-    name: "Sausage Fried Rice",
-    ingredients: "Sausage, Egg, Rice",
-    image:
-      "https://www.seriouseats.com/thmb/jsfvb5RyxampT3ZdqOgZTEV4j88=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/stir-fried-rice-with-chinese-sausage-recipe-hero-03_1-96ea47b756444693ae3cbd60ec7afe02.JPG",
-  },
-];
-
 export default function RecipePage() {
   const [currentPage, setCurrentPage] = useState(1);
   const recipesPerPage = 6;
-  const totalPages = Math.ceil(dummyRecipes.length / recipesPerPage);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isCalendarModalOpen, setIsCalendarModalOpen] = useState(false);
   const [selectedRecipe, setSelectedRecipe] = useState(null);
-  const [bookmarkedRecipes, setBookmarkedRecipes] = useState(dummyRecipes); // State untuk bookmark
+  const [bookmarkedRecipes, setBookmarkedRecipes] = useState([]); // State untuk menyimpan bookmark dari API
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  // Fetch data bookmark dari API
+  useEffect(() => {
+    const fetchBookmarks = async () => {
+      try {
+        const response = await fetch(
+          "https://backend-paw-delta.vercel.app/api/meal/bookmark/",
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${localStorage.getItem("jwtToken")}`, // Sertakan token JWT jika diperlukan
+            },
+          }
+        );
+
+        if (!response.ok) {
+          console.log(response);
+          throw new Error("Failed to fetch bookmarks");
+        }
+
+        const data = await response.json();
+        setBookmarkedRecipes(data); // Update state dengan data dari API
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching bookmarks:", error);
+        setError(error.message);
+        setLoading(false);
+      }
+    };
+
+    fetchBookmarks();
+  }, []);
+
+  const totalPages = Math.ceil(bookmarkedRecipes.length / recipesPerPage);
 
   const openModal = (recipe) => {
     setSelectedRecipe(recipe);
@@ -66,6 +85,24 @@ export default function RecipePage() {
   const handleRemoveBookmark = (id) => {
     setBookmarkedRecipes((prev) => prev.filter((recipe) => recipe.id !== id));
   };
+
+  if (loading) {
+    return (
+      <Layout>
+        <Navbar />
+        <div className="text-center text-lg">Loading...</div>
+      </Layout>
+    );
+  }
+
+  if (error) {
+    return (
+      <Layout>
+        <Navbar />
+        <div className="text-center text-red-500">{error}</div>
+      </Layout>
+    );
+  }
 
   return (
     <Layout>

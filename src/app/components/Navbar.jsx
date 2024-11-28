@@ -8,6 +8,7 @@ import {
   Bars3Icon,
   XMarkIcon,
 } from "@heroicons/react/24/solid";
+import Cookies from "js-cookie";
 
 export default function Navbar() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -16,7 +17,9 @@ export default function Navbar() {
 
   useEffect(() => {
     // Check for JWT token in localStorage
-    const token = localStorage.getItem("authToken");
+
+    const token = localStorage.getItem("token");
+    console.log(token);
     setIsAuthenticated(!!token);
   }, []);
 

@@ -33,6 +33,35 @@ export default function DetailRecipe({ recipe, onClose }) {
     setIsCalendarModalOpen(false); // Menutup modal kalender
   };
 
+  // Fungsi untuk menambahkan ke bookmark
+  const addToBookmark = async (mealDBid) => {
+    try {
+      console.log(
+        `https://backend-paw-delta.vercel.app/api/meal/bookmark/${mealDBid}`
+      );
+      const response = await fetch(
+        `https://backend-paw-delta.vercel.app/api/meal/bookmark/${mealDBid}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to bookmark the recipe");
+      }
+
+      const data = await response.json();
+      console.log("Recipe bookmarked successfully:", data);
+      alert("Recipe successfully added to bookmarks!");
+    } catch (error) {
+      console.error("Error bookmarking the recipe:", error);
+      alert("Failed to add recipe to bookmarks.");
+    }
+  };
+
   if (!recipe) return null;
 
   return (
@@ -68,12 +97,20 @@ export default function DetailRecipe({ recipe, onClose }) {
       </div>
 
       {/* Button to open modal */}
-      <button
-        onClick={() => openModal(recipe)} // Open modal on click
-        className="mt-4 bg-blue-500 text-white px-6 py-2 rounded-md"
-      >
-        Add to Schedule
-      </button>
+      <div className="flex flex-row gap-10">
+        <button
+          onClick={() => openModal(recipe)} // Open modal on click
+          className="mt-4 bg-blue-500 text-white px-6 py-2 rounded-md"
+        >
+          Add to Schedule
+        </button>
+        <button
+          onClick={() => addToBookmark(recipe.id)} // Call API on click
+          className="mt-4 bg-white text-blue-500 px-6 py-2 rounded-md"
+        >
+          Add to Bookmark
+        </button>
+      </div>
 
       {/* Modal component for confirmation */}
       <Modal
