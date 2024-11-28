@@ -10,6 +10,8 @@ import Link from "next/link";
 import Navbar from "@/app/components/Navbar";
 import axios from "axios";
 import ConfirmModal from "@/app/components/ConfirmModal";
+import Cookies from "js-cookie";
+import { useNavigate } from "react-router-dom";
 
 export default function Login() {
   // State untuk menyimpan email dan password
@@ -26,7 +28,13 @@ export default function Login() {
 
   useEffect(() => {
     setIsMounted(true);
-  }, []);
+
+    // Check for JWT token in cookies
+    const token = Cookies.get("token");
+    if (token) {
+      router.push("/landing");
+    }
+  }, [router]);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -38,14 +46,19 @@ export default function Login() {
       const response = await axios.post(
         "https://backend-paw-delta.vercel.app/api/login",
         { email, password }
+        // {
+        //   withCredentials: true,
+        // }
       );
 
       if (response.status === 200) {
-        const token = response.headers["set-cookie"];
+        const token = response.data.token;
         console.log("Response:", response);
         console.log("Token:", token);
+        //Simpan JWT token di cookie
+        Cookies.set("mealify", token);
         // Simpan token JWT di localStorage
-        localStorage.setItem("token", token);
+        //localStorage.setItem("token", token);
 
         // Show the success modal
         setModalMessage("Login Successful!");
@@ -55,7 +68,7 @@ export default function Login() {
     } catch (err) {
       // console.error("Error during login:", err);
       // setError(err.response?.data?.message || "Failed to login.");
-      setModalMessage("Login Failed: " + err.response.data.errors);
+      setModalMessage("Login Failed: " + err);
       setModalRoute("#");
       setIsModalOpen(true);
     }

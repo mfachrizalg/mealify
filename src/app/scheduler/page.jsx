@@ -14,6 +14,7 @@ import Navbar from "../components/Navbar";
 import Layout from "../components/Layout";
 import { useRouter } from "next/navigation"; // Import useRouter untuk navigasi
 import axios from "axios"; // Import axios
+import Cookies from "js-cookie";
 
 registerLicense(
   "Ngo9BigBOggjHTQxAR8/V1NDaF1cXmhIfEx0QHxbf1x0ZFRGal5WTndbUiweQnxTdEFiWH1bcXRWRmNVWUN1Xw=="
@@ -28,7 +29,14 @@ const SchedulerPage = () => {
     const fetchScheduleData = async () => {
       try {
         const response = await axios.get(
-          "https://backend-paw-delta.vercel.app/api/meal/schedule"
+          "https://backend-paw-delta.vercel.app/api/meal/schedule",
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Cookie: `mealify=${Cookies.get("mealify")}`, // Correctly pass the cookie here
+            },
+            withCredentials: true, // Ensure this is correctly placed here
+          }
         );
 
         // Transformasi data dari API
@@ -46,6 +54,7 @@ const SchedulerPage = () => {
         setRecipeScheduleData(transformedData); // Set data jadwal ke state
       } catch (error) {
         console.error("Error fetching schedule data:", error);
+        throw new Error("Failed to fetch schedule data.", error);
       }
     };
 

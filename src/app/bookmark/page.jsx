@@ -7,6 +7,8 @@ import Pagination from "../components/Pagination";
 import Modal from "../components/Modal";
 import CalendarModal from "../components/CalendarModal";
 import DetailRecipe from "../components/DetailRecipe";
+import Cookies from "js-cookie";
+import axios from "axios";
 
 export default function RecipePage() {
   const [currentPage, setCurrentPage] = useState(1);
@@ -23,21 +25,16 @@ export default function RecipePage() {
   useEffect(() => {
     const fetchBookmarks = async () => {
       try {
-        const response = await fetch(
-          "https://backend-paw-delta.vercel.app/api/meal/bookmark/",
+        const response = await axios.get(
+          "https://backend-paw-delta.vercel.app/api/meal/bookmark",
           {
-            method: "GET",
             headers: {
               "Content-Type": "application/json",
-              Authorization: `Bearer ${localStorage.getItem("jwtToken")}`, // Sertakan token JWT jika diperlukan
+              cookie: `mealify=${Cookies.get("mealify")}`, // Correctly pass the cookie here
             },
+            withCredentials: true,
           }
         );
-
-        if (!response.ok) {
-          console.log(response);
-          throw new Error("Failed to fetch bookmarks");
-        }
 
         const data = await response.json();
         setBookmarkedRecipes(data); // Update state dengan data dari API
@@ -48,6 +45,7 @@ export default function RecipePage() {
         setLoading(false);
       }
     };
+    console.log("Auth Token", Cookies.get("token"));
 
     fetchBookmarks();
   }, []);
@@ -86,23 +84,23 @@ export default function RecipePage() {
     setBookmarkedRecipes((prev) => prev.filter((recipe) => recipe.id !== id));
   };
 
-  if (loading) {
-    return (
-      <Layout>
-        <Navbar />
-        <div className="text-center text-lg">Loading...</div>
-      </Layout>
-    );
-  }
+  // if (loading) {
+  //   return (
+  //     <Layout>
+  //       <Navbar />
+  //       <div className="text-center text-lg">Loading...</div>
+  //     </Layout>
+  //   );
+  // }
 
-  if (error) {
-    return (
-      <Layout>
-        <Navbar />
-        <div className="text-center text-red-500">{error}</div>
-      </Layout>
-    );
-  }
+  // if (error) {
+  //   return (
+  //     <Layout>
+  //       <Navbar />
+  //       <div className="text-center text-red-500">{error}</div>
+  //     </Layout>
+  //   );
+  // }
 
   return (
     <Layout>
@@ -124,7 +122,7 @@ export default function RecipePage() {
           ) : (
             <div className="grid grid-cols-4 gap-4">
               {bookmarkedRecipes.map((recipe) => (
-                <div key={recipe.id}>
+                <div key={recipe.mealDBid}>
                   <BookmarkCard
                     recipe={recipe}
                     isBookmarkPage={true} // Menandai ini halaman bookmark

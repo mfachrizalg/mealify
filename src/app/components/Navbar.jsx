@@ -18,8 +18,8 @@ export default function Navbar() {
 
   useEffect(() => {
     // Check for JWT token in localStorage
-
-    const token = localStorage.getItem("token");
+    //const token = localStorage.getItem("token");
+    const token = Cookies.get("mealify");
     console.log("token", token);
     setIsAuthenticated(!!token);
   }, []);
@@ -27,7 +27,7 @@ export default function Navbar() {
   const handleLogout = () => {
     // api call to logout
     try {
-      axios.post("https://backend-paw-delta.vercel.app/api/logout", {
+      axios.get("https://backend-paw-delta.vercel.app/api/logout", {
         headers: {
           Authorization: `Bearer ${Cookies.get("token")}`,
         },
@@ -36,7 +36,8 @@ export default function Navbar() {
       console.error("Error logging out:", error);
     }
     // Remove the token from localStorage
-    localStorage.removeItem("token");
+    //localStorage.removeItem("token");
+    Cookies.remove("token");
     setIsAuthenticated(false);
     setDropdownVisible(false);
     setMenuOpen(false); // Close the menu after logout
@@ -87,7 +88,7 @@ export default function Navbar() {
                 onClick={() => setDropdownVisible(!dropdownVisible)}
                 className="cursor-pointer"
               >
-                Jally
+                User
               </span>
               <UserCircleIcon
                 onClick={() => setDropdownVisible(!dropdownVisible)}

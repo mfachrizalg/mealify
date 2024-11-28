@@ -51,7 +51,10 @@ export default function DetailRecipe({ recipe, onClose }) {
         {
           headers: {
             "Content-Type": "application/json",
+            Cookie: `mealify=${Cookies.get("mealify")}`, // Correctly pass the cookie here
           },
+
+          withCredentials: true,
         }
       );
 
@@ -86,7 +89,10 @@ export default function DetailRecipe({ recipe, onClose }) {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            Cookie: `mealify=${Cookies.get("mealify")}`, // Correctly pass the cookie here
+            // Authorization: `Bearer ${Cookies.get("mealify")}`, // Add token if required
           },
+          withCredentials: true,
         }
       );
 
