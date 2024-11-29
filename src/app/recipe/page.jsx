@@ -10,6 +10,7 @@ import Modal from "../components/Modal";
 import CalendarModal from "../components/CalendarModal";
 import DetailRecipe from "../components/DetailRecipe";
 import { useSearchParams } from "next/navigation";
+import { Suspense } from "react";
 
 export default function RecipePage() {
   const searchParams = useSearchParams(); // Hook to access query parameters
@@ -65,9 +66,11 @@ export default function RecipePage() {
     <Layout>
       <Navbar />
       <div className="flex flex-col gap-6 p-6">
-        <div className="relative top-5 mx-auto w-full h-full max-w-xl flex items-center z-10">
-          <SearchBox onSearch={handleSearch} />
-        </div>
+        <Suspense>
+          <div className="relative top-5 mx-auto w-full h-full max-w-xl flex items-center z-10">
+            <SearchBox onSearch={handleSearch} />
+          </div>
+        </Suspense>
 
         {selectedRecipe && (
           <div className="p-4 mt-6 bg-orange-100 rounded-md shadow-md w-4/5 mx-auto">
