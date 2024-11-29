@@ -23,31 +23,37 @@ export default function RecipePage() {
 
   // Fetch data bookmark dari API
   useEffect(() => {
-    const fetchBookmarks = async () => {
-      try {
-        const response = await axios.get(
-          "https://backend-paw-delta.vercel.app/api/meal/bookmark",
-          {
-            headers: {
-              "Content-Type": "application/json",
-              cookie: `mealify=${Cookies.get("mealify")}`, // Correctly pass the cookie here
-            },
-            withCredentials: true,
-          }
-        );
+    const token = Cookies.get("mealify");
+    if (!token) {
+      router.push("/landing");
+    } else {
+      const fetchBookmarks = async () => {
+        try {
+          const response = await axios.get(
+            "https://backend-paw-delta.vercel.app/api/meal/bookmark",
+            {
+              headers: {
+                "Content-Type": "application/json",
+                cookie: `mealify=${Cookies.get("mealify")}`, // Correctly pass the cookie here
+                Authorization: `Bearer ${Cookies.get("mealify")}`,
+              },
+              withCredentials: true,
+            }
+          );
 
-        const data = await response.json();
-        setBookmarkedRecipes(data); // Update state dengan data dari API
-        setLoading(false);
-      } catch (error) {
-        console.error("Error fetching bookmarks:", error);
-        setError(error.message);
-        setLoading(false);
-      }
-    };
-    console.log("Auth Token", Cookies.get("token"));
+          const data = response.data;
+          setBookmarkedRecipes(data); // Update state dengan data dari API
+          setLoading(false);
+        } catch (error) {
+          console.error("Error fetching bookmarks:", error);
+          setError(error.message);
+          setLoading(false);
+        }
+      };
+      console.log("Auth Token", Cookies.get("token"));
 
-    fetchBookmarks();
+      fetchBookmarks();
+    }
   }, []);
 
   const totalPages = Math.ceil(bookmarkedRecipes.length / recipesPerPage);
@@ -80,27 +86,55 @@ export default function RecipePage() {
     setSelectedRecipe(null);
   };
 
-  const handleRemoveBookmark = (id) => {
-    setBookmarkedRecipes((prev) => prev.filter((recipe) => recipe.id !== id));
+  const handleRemoveBookmark = async (id) => {
+    try {
+      // Display loading indicator while processing the request
+      setLoading(true);
+
+      // Send DELETE request to the API
+      await axios.delete(
+        `https://backend-paw-delta.vercel.app/api/meal/bookmark/${id}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${Cookies.get("mealify")}`, // Include token correctly
+          },
+          withCredentials: true,
+        }
+      );
+
+      // Update bookmarked recipes after successful deletion
+      setBookmarkedRecipes((prev) =>
+        prev.filter((recipe) => recipe.mealDBid !== id)
+      );
+    } catch (error) {
+      console.error("Error removing bookmark:", error);
+
+      // Display error message to the user if needed
+      setError("Failed to remove the bookmark. Please try again.");
+    } finally {
+      // Stop the loading indicator once the operation is complete
+      setLoading(false);
+    }
   };
 
-  // if (loading) {
-  //   return (
-  //     <Layout>
-  //       <Navbar />
-  //       <div className="text-center text-lg">Loading...</div>
-  //     </Layout>
-  //   );
-  // }
+  if (loading) {
+    return (
+      <Layout>
+        <Navbar />
+        <div className="text-center text-lg">Loading...</div>
+      </Layout>
+    );
+  }
 
-  // if (error) {
-  //   return (
-  //     <Layout>
-  //       <Navbar />
-  //       <div className="text-center text-red-500">{error}</div>
-  //     </Layout>
-  //   );
-  // }
+  if (error) {
+    return (
+      <Layout>
+        <Navbar />
+        <div className="text-center text-red-500">{error}</div>
+      </Layout>
+    );
+  }
 
   return (
     <Layout>
@@ -126,7 +160,9 @@ export default function RecipePage() {
                   <BookmarkCard
                     recipe={recipe}
                     isBookmarkPage={true} // Menandai ini halaman bookmark
-                    onRemoveBookmark={() => handleRemoveBookmark(recipe.id)}
+                    onRemoveBookmark={() =>
+                      handleRemoveBookmark(recipe.mealDBid)
+                    }
                   />
                 </div>
               ))}
@@ -143,12 +179,12 @@ export default function RecipePage() {
             onSave={handleSave}
             recipe={selectedRecipe}
           />
-          <Pagination
-            currentPage={currentPage}
-            totalPages={totalPages}
-            onPageChange={setCurrentPage}
-          />
         </div>
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={setCurrentPage}
+        />
       </div>
     </Layout>
   );

@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation"; // Import useRouter for navigation
 import Image from "next/image";
 import Navbar from "../components/Navbar";
@@ -10,11 +10,18 @@ import food4 from "../../../public/images/food4.svg";
 import dotted from "../../../public/images/dotted.svg";
 import Layout from "../components/Layout";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/solid";
+import Cookies from "js-cookie";
 
 export default function HomePage() {
   const [query, setQuery] = useState("");
   const router = useRouter(); // Initialize useRouter
-
+  // Check for JWT token in cookies
+  useEffect(() => {
+    const token = Cookies.get("mealify");
+    if (!token) {
+      router.push("/landing");
+    }
+  }, [router]);
   const handleSearch = () => {
     if (query.trim()) {
       // Navigate to /recipe page with the query as a query parameter

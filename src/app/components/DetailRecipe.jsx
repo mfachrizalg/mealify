@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Modal from "./Modal"; // Impor Modal komponen
 import CalendarModal from "./CalendarModal"; // Impor CalendarModal komponen
 import axios from "axios"; // Impor axios
+import Cookies from "js-cookie"; // Impor Cookies
 
 export default function DetailRecipe({ recipe, onClose }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -29,7 +30,9 @@ export default function DetailRecipe({ recipe, onClose }) {
   // Fungsi untuk menyimpan tanggal yang dipilih
   const handleSave = async (fullDate) => {
     console.log(
-      `Recipe "${selectedRecipe.name}" scheduled on ${fullDate.toISOString()}`
+      `Recipe "${selectedRecipe.name}" (${
+        selectedRecipe.idMeal
+      }) scheduled on ${fullDate.toISOString()}`
     );
     try {
       if (!selectedRecipe) {
@@ -38,7 +41,7 @@ export default function DetailRecipe({ recipe, onClose }) {
 
       // Menyiapkan payload
       const payload = {
-        mealDBid: selectedRecipe.id,
+        mealDBid: selectedRecipe.idMeal,
         startDate: fullDate.toISOString(), // Format tanggal ISO
       };
 
@@ -51,18 +54,14 @@ export default function DetailRecipe({ recipe, onClose }) {
         {
           headers: {
             "Content-Type": "application/json",
-            Cookie: `mealify=${Cookies.get("mealify")}`, // Correctly pass the cookie here
+            //Cookie: `mealify=${Cookies.get("mealify")}`, // Correctly pass the cookie here
+            Authorization: `Bearer ${Cookies.get("mealify")}`,
           },
-
           withCredentials: true,
         }
       );
 
-      if (!response.ok) {
-        throw new Error("Failed to schedule the recipe.");
-      }
-
-      const data = await response.json();
+      const data = await response.data;
       console.log("Recipe scheduled successfully:", data);
       alert(
         `Recipe "${
@@ -80,9 +79,6 @@ export default function DetailRecipe({ recipe, onClose }) {
   // Fungsi untuk menambahkan ke bookmark
   const addToBookmark = async (mealDBid) => {
     try {
-      console.log(
-        `https://backend-paw-delta.vercel.app/api/meal/bookmark/${mealDBid}`
-      );
       const response = await fetch(
         `https://backend-paw-delta.vercel.app/api/meal/bookmark/${mealDBid}`,
         {
@@ -90,7 +86,7 @@ export default function DetailRecipe({ recipe, onClose }) {
           headers: {
             "Content-Type": "application/json",
             Cookie: `mealify=${Cookies.get("mealify")}`, // Correctly pass the cookie here
-            // Authorization: `Bearer ${Cookies.get("mealify")}`, // Add token if required
+            Authorization: `Bearer ${Cookies.get("mealify")}`, // Add token if required
           },
           withCredentials: true,
         }
@@ -152,7 +148,7 @@ export default function DetailRecipe({ recipe, onClose }) {
           Add to Schedule
         </button>
         <button
-          onClick={() => addToBookmark(recipe.id)} // Call API on click
+          onClick={() => addToBookmark(recipe.idMeal)} // Call API on click
           className="mt-4 bg-white text-blue-500 px-6 py-2 rounded-md"
         >
           Add to Bookmark

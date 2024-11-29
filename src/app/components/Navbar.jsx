@@ -37,7 +37,7 @@ export default function Navbar() {
     }
     // Remove the token from localStorage
     //localStorage.removeItem("token");
-    Cookies.remove("token");
+    Cookies.remove("mealify");
     setIsAuthenticated(false);
     setDropdownVisible(false);
     setMenuOpen(false); // Close the menu after logout

@@ -56,7 +56,9 @@ export default function Login() {
         console.log("Response:", response);
         console.log("Token:", token);
         //Simpan JWT token di cookie
-        Cookies.set("mealify", token);
+        Cookies.set("mealify", token, {
+          expires: new Date(Date.now() + 1 * 60 * 60 * 1000),
+        });
         // Simpan token JWT di localStorage
         //localStorage.setItem("token", token);
 

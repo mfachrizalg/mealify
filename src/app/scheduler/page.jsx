@@ -21,50 +21,86 @@ registerLicense(
 );
 
 const SchedulerPage = () => {
-  const router = useRouter(); // Inisialisasi useRouter
-  const [recipeScheduleData, setRecipeScheduleData] = useState([]); // State untuk data jadwal
+  const router = useRouter();
+  const [recipeScheduleData, setRecipeScheduleData] = useState([]);
 
-  // Fetch data dari API
+  // Fetch data from API
   useEffect(() => {
-    const fetchScheduleData = async () => {
-      try {
-        const response = await axios.get(
-          "https://backend-paw-delta.vercel.app/api/meal/schedule",
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Cookie: `mealify=${Cookies.get("mealify")}`, // Correctly pass the cookie here
-            },
-            withCredentials: true, // Ensure this is correctly placed here
-          }
-        );
+    const token = Cookies.get("mealify");
+    if (!token) {
+      router.push("/landing");
+    } else {
+      const fetchScheduleData = async () => {
+        try {
+          const response = await axios.get(
+            "https://backend-paw-delta.vercel.app/api/meal/schedule",
+            {
+              headers: {
+                "Content-Type": "application/json",
+                Cookie: `mealify=${Cookies.get("mealify")}`,
+                Authorization: `Bearer ${Cookies.get("mealify")}`,
+              },
+              withCredentials: true,
+            }
+          );
 
-        // Transformasi data dari API
-        const transformedData = response.data.map((item, index) => ({
-          Id: index + 1, // ID unik untuk setiap item
-          Subject: item.name, // Nama resep
-          StartTime: new Date(item.startDate), // Tanggal mulai
-          EndTime: new Date(
-            new Date(item.startDate).getTime() + 60 * 60 * 1000
-          ), // Tanggal selesai (startDate + 1 jam)
-          Description: `Ingredients: ${item.ingredients.join(", ")}`, // Gabungkan bahan-bahan ke dalam deskripsi
-          RecipeId: item.mealDBid, // ID resep
-        }));
+          const transformedData = response.data.map((item, index) => ({
+            Id: index + 1,
+            Subject: item.name,
+            StartTime: new Date(item.startDate),
+            EndTime: new Date(
+              new Date(item.startDate).getTime() + 60 * 60 * 1000
+            ),
+            Description: `Ingredients: ${item.ingredients.join(", ")}`,
+            RecipeId: item.mealDBid, // Recipe ID used for deletion
+          }));
 
-        setRecipeScheduleData(transformedData); // Set data jadwal ke state
-      } catch (error) {
-        console.error("Error fetching schedule data:", error);
-        throw new Error("Failed to fetch schedule data.", error);
-      }
-    };
+          setRecipeScheduleData(transformedData);
+        } catch (error) {
+          console.error("Error fetching schedule data:", error);
+        }
+      };
 
-    fetchScheduleData();
-  }, []); // Empty dependency array to run once on mount
+      fetchScheduleData();
+    }
+  }, [router]);
 
-  // Event handler untuk mengarahkan ke halaman detail
-  const handleEventClick = (args) => {
-    const eventId = args.event.RecipeId; // Mengambil ID event yang diklik
-    router.push(`/recipe/${eventId}`); // Navigasi ke halaman detail berdasarkan ID
+  // Handle delete functionality
+  const handleDelete = async (data) => {
+    const { RecipeId } = data;
+
+    try {
+      // Send DELETE request to API
+      await axios.delete(
+        `https://backend-paw-delta.vercel.app/api/meal/schedule/${RecipeId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${Cookies.get("mealify")}`,
+          },
+          withCredentials: true,
+        }
+      );
+
+      // Update state to remove the deleted item
+      setRecipeScheduleData((prevData) =>
+        prevData.filter((item) => item.RecipeId !== RecipeId)
+      );
+
+      alert("Schedule deleted successfully!");
+
+      router.refresh(); // This reloads the page without a full refresh
+    } catch (error) {
+      console.error("Error deleting schedule:", error);
+      alert("Failed to delete the schedule.");
+    }
+  };
+
+  const formatTime = (date) => {
+    return new Intl.DateTimeFormat("en-US", {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false,
+    }).format(date);
   };
 
   return (
@@ -84,7 +120,39 @@ const SchedulerPage = () => {
               description: { name: "Description" },
             },
           }}
-          eventClick={handleEventClick} // Tambahkan event handler
+          quickInfoTemplates={{
+            header: (data) => (
+              <div className="bg-blue-500 text-white p-4 rounded-t">
+                <h2 className="font-bold text-lg truncate" title={data.Subject}>
+                  {data.Subject}
+                </h2>
+              </div>
+            ),
+            content: (data) => (
+              <div className="bg-gray-100 p-4">
+                <p className="text-gray-700 mb-2">
+                  <span className="font-bold">Time:</span>{" "}
+                  {`${formatTime(data.StartTime)} - ${formatTime(
+                    data.EndTime
+                  )}`}
+                </p>
+                <p className="text-gray-700">
+                  <span className="font-bold">Description:</span>{" "}
+                  {data.Description}
+                </p>
+              </div>
+            ),
+            footer: (data) => (
+              <div className="bg-gray-100 p-4 flex justify-end items-center">
+                <button
+                  className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition"
+                  onClick={() => handleDelete(data)}
+                >
+                  Delete
+                </button>
+              </div>
+            ),
+          }}
         >
           <Inject services={[Day, Week, WorkWeek, Month, Agenda]} />
         </ScheduleComponent>

@@ -1,7 +1,7 @@
 import React from "react";
 import Image from "next/image";
 
-export default function RecipeCard({
+export default function BookmarkCard({
   recipe,
   onRemoveBookmark,
   isBookmarkPage,
