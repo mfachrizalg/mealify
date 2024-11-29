@@ -106,10 +106,8 @@ const SchedulerPage = () => {
   return (
     <Layout>
       <Navbar />
-      <div className="mt-5 ml-5">
+      <div className="max-h-min">
         <ScheduleComponent
-          width="800px"
-          height="600px"
           eventSettings={{
             dataSource: recipeScheduleData,
             fields: {
