@@ -9,6 +9,7 @@ import CalendarModal from "../components/CalendarModal";
 import DetailRecipe from "../components/DetailRecipe";
 import Cookies from "js-cookie";
 import axios from "axios";
+import { useRouter } from "next/navigation";
 
 export default function RecipePage() {
   const [currentPage, setCurrentPage] = useState(1);
@@ -20,6 +21,7 @@ export default function RecipePage() {
   const [bookmarkedRecipes, setBookmarkedRecipes] = useState([]); // State untuk menyimpan bookmark dari API
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const router = useRouter();
 
   // Fetch data bookmark dari API
   useEffect(() => {
