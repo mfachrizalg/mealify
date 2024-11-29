@@ -52,13 +52,11 @@ export default function SignUp() {
         }
       );
 
-      if (response.status === 200) {
-        alert("Registration successful!");
-        // Show the success modal
-        setModalMessage("Registration Successful!");
-        setModalRoute("/auth/login");
-        setIsModalOpen(true);
-      }
+      //alert("Registration successful!");
+      // Show the success modal
+      setModalMessage("Registration Successful!");
+      setModalRoute("/auth/login");
+      setIsModalOpen(true);
     } catch (err) {
       setModalMessage("Registration Failed: " + err.response.data.errors);
       setModalRoute("#");
