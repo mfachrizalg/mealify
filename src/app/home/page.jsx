@@ -41,7 +41,7 @@ export default function HomePage() {
           alt="Food"
           className="absolute flex-auto sm:-top-52 md:top-30 -left-10 w-25 h-auto z-0 overflow-hidden"
           priority={true}
-          quality={1}
+          quality={10}
           loading="eager"
         />
 
@@ -51,15 +51,16 @@ export default function HomePage() {
           className="absolute flex-auto top-30 -right-64 w-25 h-auto z-0 hidden md:block"
           priority={true}
           loading="eager"
-          quality={1}
+          quality={10}
         />
 
         <Image
           src={food3}
           alt="Food"
-          className="absolute flex-auto top-96 -bottom-72 -left-10 w-auto h-72 z-0 overflow-hidden hidden md:block"
+          className="absolute top-96 -left-64 w-25 h-auto z-0 overflow-hidden hidden md:block"
           loading="eager"
-          quality={1}
+          priority={true}
+          quality={100}
         />
 
         <Image
@@ -67,7 +68,7 @@ export default function HomePage() {
           alt="Food"
           className="absolute flex top-72 -right-64 w-25 h-auto z-0 overflow-hidden"
           loading="eager"
-          quality={1}
+          quality={10}
         />
 
         {/* Search Box */}
