@@ -27,7 +27,7 @@ export default function BookmarkCard({
           </h2>
           <p className="text-base text-gray-800 mt-2">
             Ingredient:
-            <br /> {recipe.ingredients}
+            <br /> {recipe.ingredients.join(", ")}
           </p>
         </div>
         {isBookmarkPage && ( // Tampilkan tombol hanya di halaman bookmark
